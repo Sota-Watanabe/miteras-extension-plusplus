@@ -1,6 +1,15 @@
-import { printLine } from './modules/print';
+import { LogInfo, LogWarn } from '../../hooks/use-logger';
+import { useMiterasSet } from '../../hooks/use-miteras-set';
 
-console.log('Content script works!');
-console.log('Must reload extension for modifications to take effect.');
-
-printLine("Using the 'printLine' function from the Print Module");
+chrome.runtime.onMessage.addListener((request, sender) => {
+  LogInfo('addListener');
+  if (request.type === 'setMiteras') {
+    if (!document.querySelector('[id=daily-detail-body]')) {
+      LogWarn('対象の画面ではありません');
+      return;
+    }
+    LogInfo('start useMiterasSet');
+    useMiterasSet();
+    LogInfo('endof useMiterasSet');
+  }
+});

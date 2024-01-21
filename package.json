@@ -1,11 +1,11 @@
 {
-  "name": "chrome-extension-boilerplate-react",
-  "version": "5.0.4",
-  "description": "A chrome extension boilerplate built with React 18, Webpack 5, and Webpack Dev Server 4",
+  "name": "miteras-plus-plus",
+  "version": "0.0.1",
+  "description": "Web版Outlookを使って、ミテラス勤怠入力を楽にするChrome拡張機能",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/lxieyang/chrome-extension-boilerplate-react.git"
+    "url": "https://github.com/Sota-Watanabe/miteras-extension-plusplus"
   },
   "scripts": {
     "build": "node utils/build.js",
