@@ -10,7 +10,7 @@ type Project = {
   label: string;
   workTime: string;
 };
-const projects: Project[] = [
+const assignProjects: Project[] = [
   {
     value: 'PFTSR12A40',
     label: 'PFTSR12A40 HiProDirect_追加開発7.0(資産化)',
@@ -57,24 +57,40 @@ export const useMiterasSet = () => {
   workTypeElem.value = '3'; // リモートワーク
 
   // プロジェクトをセット
-  const projectContainer = document.querySelectorAll(
-    '[id=projects-holder] .project-entry-div'
-  );
-  if (projectContainer.length < projects.length) {
-    LogWarn('事前に用意されるべきプロジェクトのフォームが不足しています');
+  // 「工数が 0 のプロジェクト」の数を確認
+  const projectContainer = getEnoughAvailableProjectContainer();
+  if (projectContainer.length < assignProjects.length) {
+    LogWarn('工数が 0 のプロジェクトのフォームが不足しています');
     return;
   }
-  projects.forEach((project, index) => {
-    setProject(project, index);
+  projectContainer.forEach((projectContainer, index) => {
+    setProject(projectContainer, index);
   });
 };
 
-const setProject = (project: Project, projIndex: number) => {
-  const { value, label, workTime } = project;
+// project コンテナの条件は「disabled ではない且つ、value が 0 ではない」もの
+const getEnoughAvailableProjectContainer = () => {
+  const projectContainer = Array.from(
+    document.querySelectorAll(
+      '.project-entry-div:has([class="formsTxtBox formsTxtBox--S task-project-worktime"]:not([disabled]))'
+    )
+  ) as HTMLElement[];
+  const availableProjectContainer = projectContainer.filter(
+    (proj) => (proj.querySelector('input') as HTMLInputElement).value === '0'
+  );
+  return availableProjectContainer.filter((v) => !!v);
+};
+
+const setProject = (
+  containerElem: HTMLElement,
+  assignProjectsIndex: number
+) => {
+  const { value, label, workTime } = assignProjects[assignProjectsIndex];
+
   // select要素のセット
-  const select = document.getElementsByClassName(
+  const select = containerElem.getElementsByClassName(
     'formsPulldown formsPulldown--S project-select select2-hidden-accessible'
-  )[projIndex] as HTMLSelectElement | undefined;
+  )[0] as HTMLSelectElement | undefined;
   if (!select) {
     LogError('select要素がありません');
     return;
@@ -87,9 +103,9 @@ const setProject = (project: Project, projIndex: number) => {
   }
 
   // selectの表示用の要素をセット
-  const selectView = document.getElementsByClassName(
+  const selectView = containerElem.getElementsByClassName(
     'select2-selection__rendered'
-  )[projIndex] as HTMLSpanElement | undefined;
+  )[0] as HTMLSpanElement | undefined;
   if (!selectView) {
     LogError('selectの表示用の要素がありません');
     return;
@@ -98,25 +114,12 @@ const setProject = (project: Project, projIndex: number) => {
   selectView.title = label;
 
   // 工数をセット
-  const workTimeElem = document.getElementsByClassName(
+  const workTimeElem = containerElem.getElementsByClassName(
     'formsTxtBox formsTxtBox--S task-project-worktime'
-  )[projIndex] as HTMLInputElement | undefined;
+  )[0] as HTMLInputElement;
   if (!workTimeElem) {
     LogError('workTime要素がありません');
     return;
   }
   workTimeElem.value = workTime;
-  // post時に非表示のものは無視されてしまうため、表示する
-  const workTimeContainer1 = document.getElementsByClassName(
-    'modalAction__PJTable02 tasks-items-div display-none'
-  )[projIndex];
-  const workTimeContainer2 = document.getElementsByClassName(
-    'u_w11 u_paR4 project-worktime-input hidden'
-  )[projIndex];
-  if (!workTimeContainer1 || !workTimeContainer2) {
-    LogError('非表示要素がありません');
-    return;
-  }
-  workTimeContainer1.classList.remove('display-none');
-  workTimeContainer2.classList.remove('hidden');
 };
