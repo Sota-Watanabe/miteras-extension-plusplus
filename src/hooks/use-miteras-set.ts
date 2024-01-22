@@ -1,3 +1,4 @@
+import { LocalBucket } from '../model/form';
 import { LogError, LogWarn, LogInfo } from './use-logger';
 
 const workStart = '10:00';
@@ -23,7 +24,7 @@ const assignProjects: Project[] = [
   },
 ];
 
-export const useMiterasSet = () => {
+export const useMiterasSet = (value: LocalBucket) => {
   // 開始時間、終了時間、休憩時間、出社状況をセット
   const workStartElem =
     document.querySelector<HTMLInputElement>('#work-time-in');

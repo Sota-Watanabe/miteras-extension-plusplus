@@ -1,5 +1,8 @@
 const logPrefix = '[MiTERAS++]';
 
-export const LogError = (text: any) => console.log(`${logPrefix} ERROR:`, text);
-export const LogWarn = (text: any) => console.log(`${logPrefix} WARN:`, text);
-export const LogInfo = (text: any) => console.log(`${logPrefix} INFO:`, text);
+export const LogError = (...props: any[]) =>
+  console.log(`${logPrefix} ERROR:`, ...props);
+export const LogWarn = (...props: any[]) =>
+  console.log(`${logPrefix} WARN:`, ...props);
+export const LogInfo = (...props: any[]) =>
+  console.log(`${logPrefix} INFO:`, ...props);
