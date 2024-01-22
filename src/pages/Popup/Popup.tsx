@@ -11,19 +11,36 @@ const setValue = async () => {
   });
 };
 
+type Form = { hiproWorkTime?: string };
+
 const Popup = () => {
   const [storage, bucket] = useLocalStorage();
   LogInfo('popup', storage);
-  const { register, handleSubmit, reset } = useForm({
-    defaultValues: storage,
-  });
-  useEffect(() => {
-    reset(storage);
-  }, [storage]);
+  const { register, handleSubmit } = useForm<Form>();
+  // useEffect(() => {
+  //   reset(storage);
+  // }, [storage]);
 
-  const onsubmit = async (value: any) => {
+  const onsubmit = async (value: Form) => {
     LogInfo('onsubmit', value);
-    await bucket.set((prev) => ({ ...prev, ...value }));
+    const sumTime = Number(value.hiproWorkTime);
+    LogInfo('sumTime', sumTime);
+    const rate_8 = Math.round((sumTime / 10) * 8);
+    LogInfo('rate_8', rate_8);
+    const rate_2 = sumTime - rate_8;
+    const projects = [
+      {
+        value: 'TSGCT03A20 [TS共通]HiPro ALL_MVP開発(資産化)',
+        label: 'TSGCT03A20 [TS共通]HiPro ALL_MVP開発(資産化)',
+        workTime: String(rate_8),
+      },
+      {
+        value: 'PFTSR12A40 HiProDirect_追加開発7.0(資産化)',
+        label: 'PFTSR12A40 HiProDirect_追加開発7.0(資産化)',
+        workTime: String(rate_2),
+      },
+    ];
+    await bucket.set((prev) => ({ ...prev, projects }));
 
     setValue();
   };
@@ -31,12 +48,11 @@ const Popup = () => {
     <div>
       <form onSubmit={handleSubmit(onsubmit)}>
         <div>
-          開始時間:&emsp;
-          <input {...register('workStart')} />
-        </div>
-        <div>
-          終了時間:&emsp;
-          <input {...register('workEnd')} />
+          <p>
+            「HiPro
+            ALL_MVP開発(資産化)」と「HiProDirect_追加開発7.0(資産化)」を8:2にする時間を入力
+          </p>
+          <input {...register('hiproWorkTime')} />
         </div>
         <input type="submit" value="保存" />
       </form>
