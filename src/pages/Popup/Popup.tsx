@@ -30,12 +30,12 @@ const Popup = () => {
     const rate_2 = sumTime - rate_8;
     const projects = [
       {
-        value: 'TSGCT03A20 [TS共通]HiPro ALL_MVP開発(資産化)',
+        value: 'TSGCT03A20',
         label: 'TSGCT03A20 [TS共通]HiPro ALL_MVP開発(資産化)',
         workTime: String(rate_8),
       },
       {
-        value: 'PFTSR12A40 HiProDirect_追加開発7.0(資産化)',
+        value: 'PFTSR12A40',
         label: 'PFTSR12A40 HiProDirect_追加開発7.0(資産化)',
         workTime: String(rate_2),
       },
