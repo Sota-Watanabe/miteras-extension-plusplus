@@ -1,10 +1,10 @@
 import { LocalBucket } from '../model/form';
 import { LogError, LogWarn, LogInfo } from './use-logger';
 
-const workStart = '10:00';
-const workEnd = '19:00';
-const breakStart = '12:00';
-const breakEnd = '13:00';
+// const workStart = '10:00';
+// const workEnd = '19:00';
+// const breakStart = '12:00';
+// const breakEnd = '13:00';
 
 type Project = {
   value: string;
@@ -24,7 +24,7 @@ const assignProjects: Project[] = [
   },
 ];
 
-export const useMiterasSet = (value: LocalBucket) => {
+export const useMiterasSet = (storage: LocalBucket) => {
   // 開始時間、終了時間、休憩時間、出社状況をセット
   const workStartElem =
     document.querySelector<HTMLInputElement>('#work-time-in');
@@ -51,10 +51,10 @@ export const useMiterasSet = (value: LocalBucket) => {
     LogError('開始時間、終了時間、休憩時間、出社状況の要素がありません');
     return;
   }
-  workStartElem.value = workStart;
-  workEndElem.value = workEnd;
-  breakStartElem.value = breakStart;
-  breakEndElem.value = breakEnd;
+  if (storage.workStart) workStartElem.value = storage.workStart;
+  if (storage.workEnd) workEndElem.value = storage.workEnd;
+  if (storage.breakStart) breakStartElem.value = storage.breakStart;
+  if (storage.breakEnd) breakEndElem.value = storage.breakEnd;
   workTypeElem.value = '3'; // リモートワーク
 
   // プロジェクトをセット
