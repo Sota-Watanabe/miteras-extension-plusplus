@@ -1,6 +1,6 @@
 import { LogInfo, LogWarn } from '../../hooks/use-logger';
 import { setProjectValue } from '../../hooks/use-miteras-set';
-import { buttonTemplate, sleep } from '../../hooks/use-utils';
+import { autoInputButton, resetButton, sleep } from '../../hooks/use-utils';
 
 LogInfo('content');
 document.addEventListener('DOMContentLoaded', (_) => {
@@ -13,15 +13,50 @@ document.addEventListener('DOMContentLoaded', (_) => {
     )
     .forEach((x, i, o) => {
       LogInfo(`Add event handler ${i + 1}/${o.length}`);
-      x.addEventListener('click', setAutoInputButton);
+      x.addEventListener('click', handler);
     });
 });
 
-const setAutoInputButton = async () => {
+let time = 0;
+const handler = async () => {
   LogInfo('setAutoInputButton');
   // モーダル出現待ち
   await sleep(500);
 
+  setAutoInputButton();
+  setWorkTimeResetButton();
+
+  // モーダル上で更新が走った場合もダミーボタンをセットする
+
+  // const modalElem = document.querySelector('[id="daily-detail-body"]');
+  const modalElem = document.querySelector(
+    'div:has(>[id="daily-detail-content"])'
+  );
+  if (!modalElem) {
+    LogWarn('モーダル要素がありません');
+    return;
+  }
+  LogInfo('モーダル', modalElem);
+
+  const observer = new MutationObserver((mutations) => {
+    // 無限ループになる可能性があるので一応制限を設ける
+    time = time + 1;
+    if (time > 100) observer.disconnect();
+
+    // ボタンが追加されていなければ追加する
+    const dummyButtonNode = document.querySelector('[id="dummyButtonNode"');
+    if (dummyButtonNode) return;
+    LogInfo('ボタン追加');
+    setAutoInputButton();
+    setWorkTimeResetButton();
+  });
+  observer.observe(modalElem, {
+    childList: true,
+    subtree: true,
+  });
+};
+
+const setAutoInputButton = () => {
   const tabBarElem = document.querySelector('.modalAction__PJtotal');
   if (!tabBarElem) {
     LogWarn('自動入力ボタンを配置する要素がありません');
@@ -29,8 +64,9 @@ const setAutoInputButton = async () => {
   }
   LogInfo('ダミーのボタンを用意');
   const dummyButtonNode = document.createElement('span');
-  dummyButtonNode.innerHTML = buttonTemplate;
+  dummyButtonNode.innerHTML = autoInputButton;
   dummyButtonNode.onclick = onClickAutoInputButton;
+  dummyButtonNode.id = 'dummyButtonNode'; // オブザーバーで利用
   tabBarElem.insertBefore(dummyButtonNode, tabBarElem.firstChild);
 };
 
@@ -76,4 +112,25 @@ const onClickAutoInputButton = () => {
   ];
 
   setProjectValue(projects);
+};
+
+const setWorkTimeResetButton = () => {
+  const tabBarElem = document.querySelector('.modalAction__PJtotal');
+  if (!tabBarElem) {
+    LogWarn('リセットボタンを配置する要素がありません');
+    return;
+  }
+  LogInfo('ダミーのボタンを用意');
+  const dummyButtonNode = document.createElement('span');
+  dummyButtonNode.innerHTML = resetButton;
+  dummyButtonNode.onclick = workTimeReset;
+  tabBarElem.insertBefore(dummyButtonNode, tabBarElem.firstChild);
+};
+
+const workTimeReset = () => {
+  LogInfo('workTimeReset');
+  const workTimeElems = document.querySelectorAll(
+    '.task-project-worktime:not([disabled])'
+  ) as NodeListOf<HTMLInputElement>;
+  workTimeElems.forEach((elem) => (elem.value = '0'));
 };
