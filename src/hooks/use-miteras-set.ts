@@ -71,7 +71,7 @@ export const useMiterasSet = (storage: LocalBucket) => {
 const getEnoughAvailableProjectContainer = () => {
   const projectContainer = Array.from(
     document.querySelectorAll(
-      '.project-entry-div:has([class="formsTxtBox formsTxtBox--S task-project-worktime"]:not([disabled]))'
+      '.project-entry-div:has(.task-project-worktime:not([disabled]))'
     )
   ) as HTMLElement[];
   const availableProjectContainer = projectContainer.filter(
