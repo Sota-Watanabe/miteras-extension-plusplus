@@ -1,5 +1,5 @@
 import { LogInfo, LogWarn } from '../../hooks/use-logger';
-import { useMiterasSet } from '../../hooks/use-miteras-set';
+import { setProjectValue } from '../../hooks/use-miteras-set';
 import { buttonTemplate, sleep } from '../../hooks/use-utils';
 
 LogInfo('content');
@@ -75,6 +75,5 @@ const onClickAutoInputButton = () => {
     },
   ];
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  useMiterasSet(projects);
+  setProjectValue(projects);
 };

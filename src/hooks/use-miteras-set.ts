@@ -1,7 +1,7 @@
 import { LocalBucket } from '../model/form';
 import { LogError, LogWarn, LogInfo } from './use-logger';
 
-export const useMiterasSet = (projects: LocalBucket['projects']) => {
+export const setProjectValue = (projects: LocalBucket['projects']) => {
   const assignProjects = projects;
   LogInfo('assignProjects', assignProjects);
   // プロジェクトをセット
