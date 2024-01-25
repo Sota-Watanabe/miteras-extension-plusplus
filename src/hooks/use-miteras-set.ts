@@ -1,58 +1,8 @@
 import { LocalBucket } from '../model/form';
 import { LogError, LogWarn, LogInfo } from './use-logger';
 
-// const workStart = '10:00';
-// const workEnd = '19:00';
-// const breakStart = '12:00';
-// const breakEnd = '13:00';
-
-// const assignProjects: Project[] = [
-//   {
-//     value: 'PFTSR12A40',
-//     label: 'PFTSR12A40 HiProDirect_追加開発7.0(資産化)',
-//     workTime: '220',
-//   },
-//   {
-//     value: 'SDEVD07B90',
-//     label: 'SDEVD07B90 [SD]サビ開：部署を超える業務',
-//     workTime: '100',
-//   },
-// ];
-
-export const useMiterasSet = (storage: LocalBucket) => {
-  // // 開始時間、終了時間、休憩時間、出社状況をセット
-  // const workStartElem =
-  //   document.querySelector<HTMLInputElement>('#work-time-in');
-  // const workEndElem =
-  //   document.querySelector<HTMLInputElement>('#work-time-out');
-  // const breakStartElem = document.getElementsByClassName(
-  //   'formsTxtBox formsTxtBox--time break-time-input time-input work-time-in'
-  // )[0] as HTMLInputElement;
-  // const breakEndElem = document.getElementsByClassName(
-  //   'formsTxtBox formsTxtBox--time break-time-input time-input work-time-out'
-  // )[0] as HTMLInputElement;
-
-  // const workTypeElem = document.getElementById(
-  //   'arriveAtWorkId'
-  // ) as HTMLSelectElement;
-
-  // if (
-  //   !workEndElem ||
-  //   !workStartElem ||
-  //   !breakStartElem ||
-  //   !breakEndElem ||
-  //   !workTypeElem
-  // ) {
-  //   LogError('開始時間、終了時間、休憩時間、出社状況の要素がありません');
-  //   return;
-  // }
-  // if (storage.workStart) workStartElem.value = storage.workStart;
-  // if (storage.workEnd) workEndElem.value = storage.workEnd;
-  // if (storage.breakStart) breakStartElem.value = storage.breakStart;
-  // if (storage.breakEnd) breakEndElem.value = storage.breakEnd;
-  // workTypeElem.value = '3'; // リモートワーク
-
-  const assignProjects = storage.projects;
+export const useMiterasSet = (projects: LocalBucket['projects']) => {
+  const assignProjects = projects;
   LogInfo('assignProjects', assignProjects);
   // プロジェクトをセット
   // 「工数が 0 のプロジェクト」の数を確認

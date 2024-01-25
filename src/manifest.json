@@ -4,7 +4,6 @@
   "description": "ミテラス勤怠入力を楽にするChrome拡張機能",
   "background": { "service_worker": "background.bundle.js" },
   "action": {
-    "default_popup": "popup.html",
     "default_icon": "icon-34.png"
   },
   "icons": {
@@ -13,15 +12,22 @@
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*", "<all_urls>"],
-      "js": ["contentScript.bundle.js"]
+      "js": ["contentScript.bundle.js"],
+      "run_at": "document_start"
     }
   ],
   "devtools_page": "devtools.html",
   "web_accessible_resources": [
     {
-      "resources": ["content.styles.css", "icon-128.png", "icon-34.png"],
-      "matches": []
+      "resources": [
+        "content.styles.css",
+        "icon-128.png",
+        "icon-34.png",
+        "hipro.png"
+      ],
+      "matches": ["https://kintai.miteras.jp/*"]
     }
   ],
-  "permissions": ["activeTab", "scripting", "storage"]
+  "permissions": ["activeTab", "scripting", "storage"],
+  "host_permissions": ["https://kintai.miteras.jp/*"]
 }
