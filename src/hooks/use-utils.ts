@@ -11,6 +11,6 @@ export const autoInputButton = `<button class="btn btnAction btnAction--L">
 
 export const resetButton = `<button class="btn btnAction btnAction--L">
 <img height="19" src="${imagePath(
-  'hipro.png'
+  'reset.png'
 )}" width="19" alt="set 0!"><span> Set 0! </span>
 </button>&nbsp;&nbsp;`;
