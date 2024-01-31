@@ -1,4 +1,4 @@
-import { LogInfo, LogWarn } from '../../hooks/use-logger';
+import { LogError, LogInfo, LogWarn } from '../../hooks/use-logger';
 import { setProjectValue } from '../../hooks/use-miteras-set';
 import { autoInputButton, resetButton, sleep } from '../../hooks/use-utils';
 
@@ -49,11 +49,36 @@ const handler = async () => {
     LogInfo('ボタン追加');
     setAutoInputButton();
     setWorkTimeResetButton();
+    LogInfo('前日をコピー時に勤務終了時間を自動でセット');
+    autoWorkTimeOutSet();
   });
   observer.observe(modalElem, {
     childList: true,
     subtree: true,
   });
+};
+
+const autoWorkTimeOutSet = () => {
+  const copyButtonNode = document.querySelector('[id="copy-previous-day"]');
+  if (!copyButtonNode) {
+    LogWarn('「前日をコピー」ボタンがありません');
+    return;
+  }
+  if (copyButtonNode.getAttribute('disabled') === 'disabled') {
+    LogInfo('「前日をコピー」ボタンを押下した状態');
+    const workTimeOutNode = document.querySelector<HTMLInputElement>(
+      '[id="work-time-out"'
+    );
+    if (!workTimeOutNode) {
+      LogError('勤務終了ノードがありません');
+      return;
+    }
+    const now = new Date();
+    workTimeOutNode.value = `${now.getHours()}:${now
+      .getMinutes()
+      .toString()
+      .padStart(2, '0')}`;
+  }
 };
 
 const setAutoInputButton = () => {
