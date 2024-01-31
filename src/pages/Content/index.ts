@@ -130,7 +130,7 @@ const setWorkTimeResetButton = () => {
 const workTimeReset = () => {
   LogInfo('workTimeReset');
   const workTimeElems = document.querySelectorAll(
-    '.task-project-worktime:not([disabled])'
-  ) as NodeListOf<HTMLInputElement>;
-  workTimeElems.forEach((elem) => (elem.value = '0'));
+    '[class="btnAction btnAction--S char2 clear-btn project-extra-clear-button"]'
+  ) as NodeListOf<HTMLButtonElement>;
+  workTimeElems.forEach((elem) => elem.click());
 };
