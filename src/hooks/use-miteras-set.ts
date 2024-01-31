@@ -36,7 +36,7 @@ const setProject = (
 ) => {
   LogInfo('assignProject', assignProject);
   const { value, label, workTime } = assignProject;
-
+  // サイトの構成が複雑なのでこっちもごちゃごちゃ設定する必要がある
   // select要素のセット
   const select = containerElem.getElementsByClassName(
     'formsPulldown formsPulldown--S project-select select2-hidden-accessible'
@@ -46,11 +46,23 @@ const setProject = (
     return;
   }
 
-  for (var i = 0; i < select.options.length; i++) {
-    if (select.options[i].value === value) {
-      select.options[i].selected = true;
-    }
-  }
+  // 裏側のselectコンポーネントの更新
+  LogInfo('裏側のselectコンポーネントの更新');
+  LogInfo('selectedを取り除く');
+  Array.from(select.options).forEach((option) => {
+    option.removeAttribute('selected');
+  });
+
+  //   こんなん作る↓
+  //   <option class="option-TSGCT03A20" value="TSGCT03A20">
+  //   TSGCT03A20 [TS共通]HiPro ALL_MVP開発(資産化)
+  //   </option>
+  const dummyOptionNode = document.createElement('option');
+  dummyOptionNode.innerHTML = label;
+  dummyOptionNode.className = value;
+  dummyOptionNode.value = value;
+  dummyOptionNode.setAttribute('selected', 'selected');
+  select.appendChild(dummyOptionNode);
 
   // selectの表示用の要素をセット
   const selectView = containerElem.getElementsByClassName(
