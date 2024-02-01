@@ -1,6 +1,8 @@
 import { LogError, LogInfo, LogWarn } from '../../hooks/use-logger';
 import { setProjectValue } from '../../hooks/use-miteras-set';
+import { resetWorkTime } from '../../hooks/use-reset-work-time';
 import { autoInputButton, resetButton, sleep } from '../../hooks/use-utils';
+import { targetProjects } from '../../model/target-projects';
 
 LogInfo('content');
 document.addEventListener('DOMContentLoaded', (_) => {
@@ -125,13 +127,13 @@ const onClickAutoInputButton = () => {
   const rate_2 = splitTime - rate_8;
   const projects = [
     {
-      value: 'TSGCT03A20',
-      label: 'TSGCT03A20 [TS共通]HiPro ALL_MVP開発(資産化)',
+      value: targetProjects.hiproAll.value,
+      label: targetProjects.hiproAll.label,
       workTime: String(rate_8),
     },
     {
-      value: 'PFTSR12A40',
-      label: 'PFTSR12A40 HiProDirect_追加開発7.0(資産化)',
+      value: targetProjects.hiproDirect.value,
+      label: targetProjects.hiproDirect.label,
       workTime: String(rate_2),
     },
   ];
@@ -148,14 +150,6 @@ const setWorkTimeResetButton = () => {
   LogInfo('ダミーのボタンを用意');
   const dummyButtonNode = document.createElement('span');
   dummyButtonNode.innerHTML = resetButton;
-  dummyButtonNode.onclick = workTimeReset;
+  dummyButtonNode.onclick = resetWorkTime;
   tabBarElem.insertBefore(dummyButtonNode, tabBarElem.firstChild);
-};
-
-const workTimeReset = () => {
-  LogInfo('workTimeReset');
-  const workTimeElems = document.querySelectorAll(
-    '[class="btnAction btnAction--S char2 clear-btn project-extra-clear-button"]'
-  ) as NodeListOf<HTMLButtonElement>;
-  workTimeElems.forEach((elem) => elem.click());
 };
