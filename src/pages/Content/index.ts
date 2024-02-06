@@ -80,6 +80,10 @@ const autoWorkTimeOutSet = () => {
       .getMinutes()
       .toString()
       .padStart(2, '0')}`;
+
+    // 一度選択状態にする。しないと実働時間が更新されず500エラーが発生する
+    workTimeOutNode.focus();
+    workTimeOutNode.blur();
   }
 };
 
