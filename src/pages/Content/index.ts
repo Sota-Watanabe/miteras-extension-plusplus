@@ -126,19 +126,19 @@ const onClickAutoInputButton = () => {
   // 8:2にする工数
   const splitTime = totalWorkTime - otherTotalTime;
   LogInfo('splitTime', splitTime);
-  const rate_8 = Math.round((splitTime / 10) * 8);
-  LogInfo('rate_8', rate_8);
-  const rate_2 = splitTime - rate_8;
+  const rate_7 = Math.round((splitTime / 10) * 7);
+  LogInfo('rate_8', rate_7);
+  const rate_3 = splitTime - rate_7;
   const projects = [
     {
-      value: targetProjects.hiproAll.value,
-      label: targetProjects.hiproAll.label,
-      workTime: String(rate_8),
+      value: targetProjects.hiproToB.value,
+      label: targetProjects.hiproToB.label,
+      workTime: String(rate_7),
     },
     {
-      value: targetProjects.hiproDirect.value,
-      label: targetProjects.hiproDirect.label,
-      workTime: String(rate_2),
+      value: targetProjects.hiproToC.value,
+      label: targetProjects.hiproToC.label,
+      workTime: String(rate_3),
     },
   ];
 
