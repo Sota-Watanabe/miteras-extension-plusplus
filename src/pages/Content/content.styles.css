@@ -1,0 +1,46 @@
+/* Auto Run Button with Hover Text */
+#auto-run-all {
+  position: relative;
+  cursor: pointer;
+}
+
+#auto-run-all::before {
+  content: '以下の処理を実行します\A\A 1. 「前日をコピー」を実行\A 2. 「PC時間」実行\A 3. 「Set 0!」 を実行\A 4. 「Calc It!」 を実行';
+  position: absolute;
+  bottom: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: pre;
+  width: 300px;
+  height: auto;
+  min-height: 90px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+  z-index: 1000;
+}
+
+#auto-run-all::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-bottom-color: #333;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+  z-index: 1000;
+}
+
+#auto-run-all:hover::before,
+#auto-run-all:hover::after {
+  opacity: 1;
+  visibility: visible;
+}

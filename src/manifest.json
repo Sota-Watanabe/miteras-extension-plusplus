@@ -13,6 +13,7 @@
     {
       "matches": ["http://*/*", "https://*/*", "<all_urls>"],
       "js": ["contentScript.bundle.js"],
+      "css": ["content.styles.css"],
       "run_at": "document_start"
     }
   ],
@@ -24,11 +25,13 @@
         "icon-128.png",
         "icon-34.png",
         "hipro.png",
-        "reset.png"
+        "reset.png",
+        "pc.png",
+        "robot_face.png"
       ],
       "matches": ["https://kintai.miteras.jp/*"]
     }
   ],
-  "permissions": ["activeTab", "scripting", "storage"],
+  "permissions": ["storage"],
   "host_permissions": ["https://kintai.miteras.jp/*"]
 }
