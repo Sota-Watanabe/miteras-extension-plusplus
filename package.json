@@ -1,6 +1,6 @@
 {
   "name": "miteras-plus-plus",
-  "version": "3.0.4",
+  "version": "3.1.0",
   "description": "Web版Outlookを使って、ミテラス勤怠入力を楽にするChrome拡張機能",
   "license": "MIT",
   "repository": {
