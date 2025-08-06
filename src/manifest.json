@@ -32,6 +32,5 @@
       "matches": ["https://kintai.miteras.jp/*"]
     }
   ],
-  "permissions": ["storage"],
   "host_permissions": ["https://kintai.miteras.jp/*"]
 }
