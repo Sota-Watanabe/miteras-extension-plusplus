@@ -327,12 +327,12 @@ const onClickAutoInputButton = () => {
     {
       value: targetProjects.hiproToB.value,
       label: targetProjects.hiproToB.label,
-      workTime: String(rate_7),
+      workTime: String(rate_3),
     },
     {
       value: targetProjects.hiproToC.value,
       label: targetProjects.hiproToC.label,
-      workTime: String(rate_3),
+      workTime: String(rate_7),
     },
   ];
 
