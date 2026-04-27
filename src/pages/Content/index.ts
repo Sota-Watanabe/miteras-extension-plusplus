@@ -317,24 +317,24 @@ const onClickAutoInputButton = () => {
     ? _otherTotalTime.reduce((sum, value) => sum + value)
     : 0;
   LogInfo('otherTotalTime', otherTotalTime);
-  // 8:2にする工数
+
   const splitTime = totalWorkTime - otherTotalTime;
   LogInfo('splitTime', splitTime);
-  const rate_7 = Math.round((splitTime / 10) * 7);
-  LogInfo('rate_8', rate_7);
-  const rate_3 = splitTime - rate_7;
-  const projects = [
-    {
-      value: targetProjects.hiproToB.value,
-      label: targetProjects.hiproToB.label,
-      workTime: String(rate_3),
-    },
-    {
-      value: targetProjects.hiproToC.value,
-      label: targetProjects.hiproToC.label,
-      workTime: String(rate_7),
-    },
-  ];
+  const totalRatio = targetProjects.reduce((sum, p) => sum + p.ratio, 0);
+  if (totalRatio !== 100) {
+    LogError(`ratioの合計が100ではありません: ${totalRatio}`);
+    return;
+  }
+  const allocated = targetProjects.map((p, i) => {
+    if (i === targetProjects.length - 1) return 0; // 最後は余りで計算
+    return Math.round((splitTime / totalRatio) * p.ratio);
+  });
+  const lastTime = splitTime - allocated.slice(0, -1).reduce((s, v) => s + v, 0);
+  allocated[allocated.length - 1] = lastTime;
+  const projects = targetProjects.map((p, i) => ({
+    value: p.value,
+    workTime: String(allocated[i]),
+  }));
 
   setProjectValue(projects);
 };

@@ -3,5 +3,5 @@ export type LocalBucket = {
   workEnd?: string;
   breakStart?: string;
   breakEnd?: string;
-  projects: { value: string; label: string; workTime: string }[];
+  projects: { value: string; workTime: string }[];
 };

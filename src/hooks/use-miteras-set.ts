@@ -35,7 +35,7 @@ const setProject = (
   assignProject: LocalBucket['projects'][number]
 ) => {
   LogInfo('assignProject', assignProject);
-  const { value, label, workTime } = assignProject;
+  const { value, workTime } = assignProject;
   // サイトの構成が複雑なのでこっちもごちゃごちゃ設定する必要がある
   // select要素のセット
   const select = containerElem.getElementsByClassName(
@@ -45,6 +45,16 @@ const setProject = (
     LogError('select要素がありません');
     return;
   }
+
+  // valueからlabelを取得
+  const existingOption = Array.from(select.options).find(
+    (opt) => opt.value === value
+  );
+  if (!existingOption) {
+    LogError(`value: ${value} に対応するoption要素がありません`);
+    return;
+  }
+  const label = existingOption.text;
 
   // 裏側のselectコンポーネントの更新
   LogInfo('裏側のselectコンポーネントの更新');

@@ -1,9 +1,7 @@
 import { targetProjects } from '../model/target-projects';
 import { LogError, LogWarn, LogInfo } from './use-logger';
 
-const projectValues = Object.entries(targetProjects).map(
-  ([key, value]) => value.label
-);
+const projectValues = targetProjects.map((p) => p.value);
 export const resetWorkTime = () => {
   const projectContainer = Array.from(
     document.querySelectorAll(
@@ -12,10 +10,10 @@ export const resetWorkTime = () => {
   ) as HTMLElement[];
   projectContainer.forEach((projectElem) => {
     // 対象のプロジェクトだった場合、クリアボタンを押下
-    const displaySelect = projectElem.querySelector(
-      '[class="select2-selection__rendered"'
-    ) as HTMLSpanElement;
-    if (projectValues.includes(displaySelect?.innerText)) {
+    const select = projectElem.querySelector(
+      '.project-select'
+    ) as HTMLSelectElement;
+    if (projectValues.includes(select?.value)) {
       const clearButton = projectElem.querySelector(
         '[class="btnAction btnAction--S char2 clear-btn project-extra-clear-button"]'
       ) as HTMLButtonElement;
