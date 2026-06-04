@@ -6,7 +6,7 @@ export const imagePath = (name: string) => chrome.runtime.getURL(name);
 export const autoInputButton = `<button class="btn btnAction btnAction--L" id="auto-input-button">
 <img height="19" src="${imagePath(
   'hipro.png'
-)}" width="19" alt="Calt It!"><span> Calc It! </span>
+)}" width="19" alt="Calt It!"><span> Set It! </span>
 </button>&nbsp;&nbsp;`;
 
 export const resetButton = `<button class="btn btnAction btnAction--L" id="reset-button">

@@ -4,33 +4,77 @@ import { LogError, LogWarn, LogInfo } from './use-logger';
 export const setProjectValue = (projects: LocalBucket['projects']) => {
   const assignProjects = projects;
   LogInfo('assignProjects', assignProjects);
-  // プロジェクトをセット
-  // 「工数が 0 のプロジェクト」の数を確認
-  const projectContainer = getEnoughAvailableProjectContainer();
-  LogInfo('projectContainer', projectContainer);
-  if (projectContainer.length < assignProjects.length) {
-    LogWarn('工数が 0 のプロジェクトのフォームが不足しています');
-    return;
-  }
-  projectContainer.forEach((projectContainer, index) => {
-    setProject(projectContainer, assignProjects[index]);
-  });
-};
+  // 工数が0のプロジェクトの用意する
+  setProjectForms(assignProjects);
 
-// project コンテナの条件は「disabled ではない且つ、value が 0 ではない」もの
-const getEnoughAvailableProjectContainer = () => {
-  const projectContainer = Array.from(
+  // 対象となるプロジェクトフォームを取得する
+  const projectContainers = Array.from(
     document.querySelectorAll(
       '.project-entry-div:has(.task-project-worktime:not([disabled]))'
     )
   ) as HTMLElement[];
-  const availableProjectContainer = projectContainer.filter(
+  const availableProjectContainer = projectContainers.filter(
     (proj) => (proj.querySelector('input') as HTMLInputElement).value === '0'
   );
-  return availableProjectContainer.filter((v) => !!v);
+
+  // プロジェクトフォームに工数をセットする
+  availableProjectContainer.forEach((projectContainer, index) => {
+    setProjectWorkTime(projectContainer, assignProjects[index]);
+  });
 };
 
-const setProject = (
+const setProjectForms = (targetProjects: LocalBucket['projects']) => {
+  targetProjects.forEach((targetProject) => {
+    // 一旦すべてのフォームを取得
+    const settingProjectTexts = document.querySelectorAll(
+      '[role="textbox"]'
+    ) as NodeListOf<HTMLSelectElement>;
+    LogInfo('settingProjectTexts', settingProjectTexts);
+    // targetProjectがすでにフォームにセットされているか確認する
+    const isAlreadySet = Array.from(settingProjectTexts).some((text) =>
+      text.textContent?.startsWith(targetProject.value)
+    );
+
+    if (isAlreadySet) {
+      LogInfo(
+        `プロジェクト ${targetProject.value} はすでにフォームにセットされています`
+      );
+      return;
+    }
+    setProjectValueToForm(targetProject.value);
+  });
+};
+
+const setProjectValueToForm = (value: string) => {
+  LogInfo('setProjectValueToForm');
+  // 一番最後（DOMでは最後から2番目）のフォームを取得する
+  // 最後のフォームは必ず未入力のフォームなので、ここに値をセットする
+  const elements = document.querySelectorAll('.project-select');
+  const select = elements[elements.length - 2] as HTMLSelectElement | undefined;
+
+  if (!select) {
+    LogError('select要素がありません');
+    return;
+  }
+
+  select.value = value;
+
+  // select2:opening
+  select.dispatchEvent(
+    new CustomEvent('select2:opening', {
+      bubbles: true,
+    })
+  );
+
+  // change
+  select.dispatchEvent(
+    new Event('change', {
+      bubbles: true,
+    })
+  );
+};
+
+const setProjectWorkTime = (
   containerElem: HTMLElement,
   assignProject: LocalBucket['projects'][number]
 ) => {
@@ -45,6 +89,7 @@ const setProject = (
     LogError('select要素がありません');
     return;
   }
+  LogInfo('select要素を見つけました', select);
 
   // valueからlabelを取得
   const existingOption = Array.from(select.options).find(
