@@ -1,5 +1,6 @@
 import { LocalBucket } from '../model/form';
 import { LogError, LogWarn, LogInfo } from './use-logger';
+import { sleep } from './use-utils';
 
 export const setProjectValue = (projects: LocalBucket['projects']) => {
   const assignProjects = projects;
@@ -31,15 +32,16 @@ const setProjectForms = (targetProjects: LocalBucket['projects']) => {
     ) as NodeListOf<HTMLSelectElement>;
     LogInfo('settingProjectTexts', settingProjectTexts);
     // targetProjectがすでにフォームにセットされているか確認する
-    const isAlreadySet = Array.from(settingProjectTexts).some((text) =>
+    const alreadySetElem = Array.from(settingProjectTexts).find((text) =>
       text.textContent?.startsWith(targetProject.value)
     );
 
-    if (isAlreadySet) {
+    if (alreadySetElem) {
       LogInfo(
-        `プロジェクト ${targetProject.value} はすでにフォームにセットされています`
+        `プロジェクト ${targetProject.value} はすでにフォームにセットされているので、一旦削除`,
+        alreadySetElem
       );
-      return;
+      alreadySetElem.closest('div')!.querySelector('button')!.click();
     }
     setProjectValueToForm(targetProject.value);
   });

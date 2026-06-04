@@ -293,14 +293,29 @@ const onClickAutoInputButton = () => {
   const totalWorkTime = Number(totalWorkTimeElem.innerHTML.slice(0, -1));
   LogInfo('totalWorkTime', totalWorkTime);
   // 現在記入済みの工数の累計
-  const _otherTotalTime = Array.from(
+  const AllWorkTimeTextBox = Array.from(
     document.querySelectorAll(
       '.task-project-worktime:not([disabled])'
     ) as NodeListOf<HTMLInputElement>
-  ).map((elem) => Number(elem.value));
-  const otherTotalTime = _otherTotalTime.length
-    ? _otherTotalTime.reduce((sum, value) => sum + value)
-    : 0;
+  );
+  let otherTotalTime = 0;
+
+  if (AllWorkTimeTextBox.length !== 0) {
+    // 計算対象外のプロジェクトを除外した工数のテキストボックスを取得する
+    const OtherWorkTimeTextBox = AllWorkTimeTextBox.filter((textBox) => {
+      const text = textBox
+        .closest('div')!
+        .querySelector('[role="textbox"]')!.textContent;
+
+      const projectValues = targetProjects.map((project) => project.value);
+      return !projectValues.some((value) => text?.startsWith(value));
+    });
+    otherTotalTime = OtherWorkTimeTextBox.reduce(
+      (sum, textBox) => sum + Number(textBox.value),
+      0
+    );
+  }
+
   LogInfo('otherTotalTime', otherTotalTime);
 
   const splitTime = totalWorkTime - otherTotalTime;
@@ -314,7 +329,8 @@ const onClickAutoInputButton = () => {
     if (i === targetProjects.length - 1) return 0; // 最後は余りで計算
     return Math.round((splitTime / totalRatio) * p.ratio);
   });
-  const lastTime = splitTime - allocated.slice(0, -1).reduce((s, v) => s + v, 0);
+  const lastTime =
+    splitTime - allocated.slice(0, -1).reduce((s, v) => s + v, 0);
   allocated[allocated.length - 1] = lastTime;
   const projects = targetProjects.map((p, i) => ({
     value: p.value,
@@ -323,5 +339,3 @@ const onClickAutoInputButton = () => {
 
   setProjectValue(projects);
 };
-
-

@@ -8,11 +8,11 @@ export const targetProjects = [
     ratio: 10,
   },
   {
-    value: 'ITICC01A20',
-    ratio: 70,
-  },
-  {
     value: 'ITICT02A10',
     ratio: 10,
+  },
+  {
+    value: 'ITICC01A20',
+    ratio: 70,
   },
 ];
