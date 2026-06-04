@@ -1,10 +1,8 @@
 import { LogError, LogInfo, LogWarn } from '../../hooks/use-logger';
 import { setProjectValue } from '../../hooks/use-miteras-set';
-import { resetWorkTime } from '../../hooks/use-reset-work-time';
 import {
   autoInputButton,
   autoRunButton,
-  resetButton,
   setPcTimeButton,
   sleep,
 } from '../../hooks/use-utils';
@@ -31,7 +29,6 @@ const handler = async (buttonElement: Element) => {
   // モーダル出現待ち
   await sleep(500);
   setAutoInputButton();
-  setWorkTimeResetButton();
   setPcTimeSetButton();
   setAutoRunButton();
   deleteSaveButtonAlert();
@@ -58,7 +55,6 @@ const handler = async (buttonElement: Element) => {
     if (dummyButtonNode) return;
     LogInfo('ボタン追加');
     setAutoInputButton();
-    setWorkTimeResetButton();
     LogInfo('前日をコピー時に勤務終了時間を自動でセット');
     autoWorkTimeOutSet();
     setPcTimeSetButton();
@@ -125,17 +121,6 @@ const setAutoRunButton = () => {
       setPcTimeButton.click();
     } else {
       LogError('PC時間設定ボタンが見つかりません');
-    }
-
-    // set-pc-time-button
-    await sleep(100);
-    const resetButton = document.querySelector(
-      '#reset-button'
-    ) as HTMLButtonElement;
-    if (resetButton) {
-      resetButton.click();
-    } else {
-      LogError('リセットボタンが見つかりません');
     }
 
     // auto-input-button
@@ -339,15 +324,4 @@ const onClickAutoInputButton = () => {
   setProjectValue(projects);
 };
 
-const setWorkTimeResetButton = () => {
-  const tabBarElem = document.querySelector('.modalAction__PJtotal');
-  if (!tabBarElem) {
-    LogWarn('リセットボタンを配置する要素がありません');
-    return;
-  }
-  LogInfo('ダミーのボタンを用意');
-  const dummyButtonNode = document.createElement('span');
-  dummyButtonNode.innerHTML = resetButton;
-  dummyButtonNode.onclick = resetWorkTime;
-  tabBarElem.insertBefore(dummyButtonNode, tabBarElem.firstChild);
-};
+
