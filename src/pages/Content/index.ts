@@ -2,7 +2,6 @@ import { LogError, LogInfo, LogWarn } from '../../hooks/use-logger';
 import { setProjectValue } from '../../hooks/use-miteras-set';
 import {
   autoInputButton,
-  autoRunButton,
   setPcTimeButton,
   sleep,
 } from '../../hooks/use-utils';
@@ -30,7 +29,6 @@ const handler = async (buttonElement: Element) => {
   await sleep(500);
   setAutoInputButton();
   setPcTimeSetButton();
-  setAutoRunButton();
   deleteSaveButtonAlert();
 
   // モーダル上で更新が走った場合もダミーボタンをセットする
@@ -58,7 +56,6 @@ const handler = async (buttonElement: Element) => {
     LogInfo('前日をコピー時に勤務終了時間を自動でセット');
     autoWorkTimeOutSet();
     setPcTimeSetButton();
-    setAutoRunButton();
     deleteSaveButtonAlert();
   });
   observer.observe(modalElem, {
@@ -81,92 +78,6 @@ const deleteSaveButtonAlert = () => {
       true
     );
   }
-};
-
-const setAutoRunButton = () => {
-  // クラス modalAction__btnBox を持つ要素を取得
-  const modalActionBtnBox = document.querySelector('.modalAction__btnBox');
-  // 最後の子要素に自動実行ボタンを追加
-  if (!modalActionBtnBox) {
-    LogWarn('自動実行ボタンを配置する要素がありません');
-    return;
-  }
-  LogInfo('自動実行ボタンを用意');
-  const dummyButtonNode = document.createElement('span');
-  dummyButtonNode.innerHTML = autoRunButton;
-  dummyButtonNode.onclick = async () => {
-    LogInfo('自動実行ボタンがクリックされました');
-    // copy-previous-day
-    const copyButtonNode = document.querySelector(
-      '[id="copy-previous-day"]'
-    ) as HTMLButtonElement;
-    if (!copyButtonNode) {
-      LogError('前日をコピーボタンが見つかりません');
-      return;
-    }
-    copyButtonNode.click();
-
-    const isCopyCompleted = await checkCopyCompletion();
-    if (!isCopyCompleted) {
-      LogError('前日をコピーが完了しませんでした');
-      return;
-    }
-
-    // set-pc-time-button
-    await sleep(100);
-    const setPcTimeButton = document.querySelector(
-      '#set-pc-time-button'
-    ) as HTMLButtonElement;
-    if (setPcTimeButton) {
-      setPcTimeButton.click();
-    } else {
-      LogError('PC時間設定ボタンが見つかりません');
-    }
-
-    // auto-input-button
-    await sleep(100);
-    const autoInputButton = document.querySelector(
-      '#auto-input-button'
-    ) as HTMLButtonElement;
-    if (autoInputButton) {
-      autoInputButton.click();
-    } else {
-      LogError('自動入力ボタンが見つかりません');
-    }
-  };
-  // 最後に追加
-  const children = modalActionBtnBox.children;
-  if (children.length > 1) {
-    modalActionBtnBox.insertBefore(dummyButtonNode, children[children.length]);
-  } else {
-    LogWarn('ボタンが1つしかありません。ダミーボタンを追加できません');
-  }
-};
-
-// 0.5秒ごとにボタンの状態をチェックし、disabledになったら次の処理へ
-// 10秒経ってもdisabledにならなければエラー
-const checkCopyCompletion = async () => {
-  const maxAttempts = 20; // 10秒 ÷ 0.5秒 = 20回
-  let attempts = 0;
-
-  while (attempts < maxAttempts) {
-    await sleep(500); // 0.5秒待機
-    attempts++;
-
-    const afterCopyButtonNode = document.querySelector(
-      '[id="copy-previous-day"]'
-    ) as HTMLButtonElement;
-
-    if (
-      afterCopyButtonNode &&
-      afterCopyButtonNode.getAttribute('disabled') === 'disabled'
-    ) {
-      LogInfo('前日をコピーが完了しました');
-      return true;
-    }
-  }
-
-  return false; // 10秒経ってもdisabledにならなかった場合
 };
 
 const setPcTimeSetButton = () => {
@@ -306,7 +217,6 @@ const onClickAutoInputButton = () => {
       const text = textBox
         .closest('div')!
         .querySelector('[role="textbox"]')!.textContent;
-
       const projectValues = targetProjects.map((project) => project.value);
       return !projectValues.some((value) => text?.startsWith(value));
     });
