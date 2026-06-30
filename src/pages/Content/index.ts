@@ -148,6 +148,25 @@ const onClickPcTimeSetButton = () => {
     workTimeOutNode.focus();
     workTimeOutNode.blur();
   }
+
+  // breaktime1配下の休憩開始・終了時刻に12:00と13:00を入力
+  const breaktime1Elem = document.querySelector('#breaktime1');
+  if (breaktime1Elem) {
+    const breakTimeInNode = breaktime1Elem.querySelector<HTMLInputElement>('.work-time-in');
+    const breakTimeOutNode = breaktime1Elem.querySelector<HTMLInputElement>('.work-time-out');
+    if (breakTimeInNode) {
+      breakTimeInNode.value = '12:00';
+      breakTimeInNode.focus();
+      breakTimeInNode.blur();
+    }
+    if (breakTimeOutNode) {
+      breakTimeOutNode.value = '13:00';
+      breakTimeOutNode.focus();
+      breakTimeOutNode.blur();
+    }
+  } else {
+    LogWarn('breaktime1要素がありません');
+  }
 };
 
 const autoWorkTimeOutSet = () => {
