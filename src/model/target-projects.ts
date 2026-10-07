@@ -4,14 +4,14 @@
 export const targetProjects = [
   {
     value: 'ITICR01A30', // ①ITICR01A30 HiPro共通マイページ継続開発(資産化)：11.7%
-    ratio: 11.76,
+    ratio: 10,
   },
   {
     value: 'ITICT03A10', // ②ITICT03A10 HiProBiz_プロ人材レコメンドAI：47.0%
-    ratio: 47.06,
+    ratio: 40,
   },
   {
     value: 'ITICG01A10', // ③ITICG01A10 HiPro個人向けAIカウンセリングPJT(資産化)：41.1%
-    ratio: 41.18,
+    ratio: 35,
   },
 ];

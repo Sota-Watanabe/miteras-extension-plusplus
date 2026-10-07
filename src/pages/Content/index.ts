@@ -250,8 +250,8 @@ const onClickAutoInputButton = () => {
   const splitTime = totalWorkTime - otherTotalTime;
   LogInfo('splitTime', splitTime);
   const totalRatio = targetProjects.reduce((sum, p) => sum + p.ratio, 0);
-  if (totalRatio !== 100) {
-    LogError(`ratioの合計が100ではありません: ${totalRatio}`);
+  if (totalRatio <= 0) {
+    LogError(`ratioの合計が正の値ではありません: ${totalRatio}`);
     return;
   }
   const allocated = targetProjects.map((p, i) => {
