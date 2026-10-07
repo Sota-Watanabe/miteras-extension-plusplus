@@ -101,6 +101,14 @@ const setPcTimeSetButton = () => {
 };
 
 const onClickPcTimeSetButton = () => {
+  const arriveAtWorkSelect = document.querySelector<HTMLSelectElement>(
+    '#arriveAtWorkId'
+  );
+  if (arriveAtWorkSelect) {
+    arriveAtWorkSelect.value = '3';
+    arriveAtWorkSelect.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+
   // 日付文字列
   const dateElem = document.querySelector('#daily-entry-date');
   if (!dateElem) {
