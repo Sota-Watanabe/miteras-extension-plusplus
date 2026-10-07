@@ -1,21 +1,17 @@
-// https://persol-service-dev.slack.com/archives/C04U6FE9QQK/p1788225059283409?thread_ts=1788165588.843239&cid=C04U6FE9QQK
-// 継続開発、個人サイト統合、窓口自動化、要件定義、人選軸AIを
-// 2 : 7 : 8 : 1で配分
+// https://persol-service-dev.slack.com/archives/C04U6FE9QQK/p1791348102047329?thread_ts=1790907231.891669&cid=C04U6FE9QQK
+// 継続開発、プロ人材リコメンド、AIカウンセリングをそれぞれ
+// 10: 40: 35 の割合にする
 export const targetProjects = [
   {
-    value: 'ITICR01A30', // ①継続開発(HiPro共通マイページ継続開発)：11.11%
-    ratio: 11.11,
+    value: 'ITICR01A30', // ①ITICR01A30 HiPro共通マイページ継続開発(資産化)：11.7%
+    ratio: 11.7,
   },
   {
-    value: 'ITICC01A20', // ②個人サイト統合(HiPro個人サイト統合PJTフェーズ１_開発)：38.89%
-    ratio: 38.89,
+    value: 'ITICT03A10', // ②ITICT03A10 HiProBiz_プロ人材レコメンドAI：47.0%
+    ratio: 47.0,
   },
   {
-    value: 'ITICT02A10', // ③窓口開設自動化(窓口開設自動化PJT_企画)：44.44%
-    ratio: 44.44,
-  },
-  {
-    value: 'ITICT01A10', // ④要件定義・人選軸AI：5.56%
-    ratio: 5.56,
+    value: 'ITICG01A10', // ③ITICG01A10 HiPro個人向けAIカウンセリングPJT(資産化)：41.1%
+    ratio: 41.1,
   },
 ];
