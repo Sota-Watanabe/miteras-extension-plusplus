@@ -257,18 +257,9 @@ const onClickAutoInputButton = () => {
 
   const splitTime = totalWorkTime - otherTotalTime;
   LogInfo('splitTime', splitTime);
-  const totalRatio = targetProjects.reduce((sum, p) => sum + p.ratio, 0);
-  if (totalRatio <= 0) {
-    LogError(`ratioの合計が正の値ではありません: ${totalRatio}`);
-    return;
-  }
-  const allocated = targetProjects.map((p, i) => {
-    if (i === targetProjects.length - 1) return 0; // 最後は余りで計算
-    return Math.round((splitTime / totalRatio) * p.ratio);
-  });
-  const lastTime =
-    splitTime - allocated.slice(0, -1).reduce((s, v) => s + v, 0);
-  allocated[allocated.length - 1] = lastTime;
+  const allocated = targetProjects.map((p) =>
+    Math.round((splitTime * p.ratio) / 100)
+  );
   const projects = targetProjects.map((p, i) => ({
     value: p.value,
     workTime: String(allocated[i]),
