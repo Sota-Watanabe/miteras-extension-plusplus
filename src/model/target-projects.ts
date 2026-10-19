@@ -7,7 +7,7 @@ export const targetProjects = [
     ratio: 10,
   },
   {
-    value: 'ITICT03A10', // ②ITICT03A10 HiProBiz_プロ人材レコメンドAI：47.0%
+    value: 'ITICT04A10', // ②ITICT04A10 HiProBiz_プロ人材レコメンドAI（資産化）：47.0%
     ratio: 40,
   },
   {
